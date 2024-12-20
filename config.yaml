@@ -1,4 +1,4 @@
-data_path: '/data/LiuWenHao/data'
+data_path: 'path/to/data'
 
 dataset: 'MSCOCO' # MSCOCO/NUSWIDE
 
