@@ -1,0 +1,27 @@
+data_path: '/data/LiuWenHao/data'
+
+dataset: 'MSCOCO' # MSCOCO/NUSWIDE
+
+bit: 16 # 16/32/64/128
+epoch: 100
+valid: True
+valid_epoch: 1
+lr: 0.00001
+end_lr: 5.e-5
+seed: 88
+batch_size: 512
+feature_dim: 512
+
+map_dim: 256
+num_prompt: 7
+num_tasks: 5
+
+# loss parameter
+alpha_param: 0.001
+beta_param: 1
+gamma_param: 0.1
+delta_param: 1
+
+# ablation
+ablation_module: False
+select_module: 'expert_prompt'  # expert_prompt/global_prompt/PromptFusion
