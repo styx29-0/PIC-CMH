@@ -1,10 +1,10 @@
 import os
 import yaml
 import argparse
-import numpy as np
 from train import train_model
 from load_data import get_loader
 from utils import logger, set_seed, checkpoints, creat_result_dict, save_result_dict
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -22,10 +22,10 @@ def parse_args():
     return args
 
 
-def main(args):
+def main():
     args = parse_args()
     args.dataset_path = os.path.join(args.data_path, args.dataset)
-    checkpoints()
+    checkpoints(args)
     log = logger(args)
     set_seed(args.seed)
 
@@ -36,6 +36,7 @@ def main(args):
         input_data_par, dataloader = get_loader(args, task_index=task_index)
         
         train_model(args, log, input_data_par, dataloader, task_index, result_dict)
+        print(f'The {task_index+1} task is trained')
 
     save_result_dict(args, result_dict)
 

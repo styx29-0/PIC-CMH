@@ -1,0 +1,6 @@
+checkpoints
+logs/*.log
+result/*.csv
+
+# pycache
+__pycache__

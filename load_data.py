@@ -32,34 +32,34 @@ class CustomDataSet(Dataset):
     
     
 def get_data(data_path, task_index, dataset):
-    if dataset == 'Prompt_coco':
-        train_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "train_{}_image.mat".format(task_index), 'r')['train_{}_image'.format(task_index)], 0, 1))
-        train_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "train_{}_text.mat".format(task_index), 'r')['train_{}_text'.format(task_index)], 0, 1))
-        train_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "train_{}_label.mat".format(task_index), 'r')['train_{}_lab'.format(task_index)], 0, 1))
+    if dataset == 'MSCOCO':
+        train_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_{}_image.mat".format(task_index), 'r')['train_{}_image'.format(task_index)], 0, 1))
+        train_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_{}_text.mat".format(task_index), 'r')['train_{}_text'.format(task_index)], 0, 1))
+        train_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_{}_label.mat".format(task_index), 'r')['train_{}_lab'.format(task_index)], 0, 1))
 
-        test_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "test_{}_image.mat".format(task_index), 'r')['test_{}_image'.format(task_index)], 0, 1))
-        test_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "test_{}_text.mat".format(task_index), 'r')['test_{}_text'.format(task_index)], 0, 1))
-        test_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "test_{}_label.mat".format(task_index), 'r')['test_{}_lab'.format(task_index)], 0, 1))
+        test_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/test_{}_image.mat".format(task_index), 'r')['test_{}_image'.format(task_index)], 0, 1))
+        test_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/test_{}_text.mat".format(task_index), 'r')['test_{}_text'.format(task_index)], 0, 1))
+        test_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/test_{}_label.mat".format(task_index), 'r')['test_{}_lab'.format(task_index)], 0, 1))
 
-        database_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "database_{}_image.mat".format(task_index), 'r')['database_{}_image'.format(task_index)], 0, 1))
-        database_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "database_{}_text.mat".format(task_index), 'r')['database_{}_text'.format(task_index)], 0, 1))
-        database_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "database_{}_label.mat".format(task_index), 'r')['database_{}_lab'.format(task_index)], 0, 1))
-    else:
-        train_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "train_task_{}_image.mat".format(task_index), 'r')['train_task_{}_image'.format(task_index)], 0, 1))
-        train_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "train_task_{}_text.mat".format(task_index), 'r')['train_task_{}_text'.format(task_index)], 0, 1))
-        train_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "train_task_{}_label.mat".format(task_index), 'r')['train_task_{}_label'.format(task_index)], 0, 1))
+        database_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_{}_image.mat".format(task_index), 'r')['database_{}_image'.format(task_index)], 0, 1))
+        database_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_{}_text.mat".format(task_index), 'r')['database_{}_text'.format(task_index)], 0, 1))
+        database_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_{}_label.mat".format(task_index), 'r')['database_{}_lab'.format(task_index)], 0, 1))
+    elif dataset == 'NUSWIDE':
+        train_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_task_{}_image.mat".format(task_index), 'r')['train_task_{}_image'.format(task_index)], 0, 1))
+        train_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_task_{}_text.mat".format(task_index), 'r')['train_task_{}_text'.format(task_index)], 0, 1))
+        train_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_task_{}_label.mat".format(task_index), 'r')['train_task_{}_label'.format(task_index)], 0, 1))
 
-        test_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "test_task_{}_image.mat".format(task_index), 'r')['test_task_{}_image'.format(task_index)], 0, 1))
-        test_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "test_task_{}_text.mat".format(task_index), 'r')['test_task_{}_text'.format(task_index)], 0, 1))
-        test_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "test_task_{}_label.mat".format(task_index), 'r')['test_task_{}_label'.format(task_index)], 0, 1))
+        test_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/test_task_{}_image.mat".format(task_index), 'r')['test_task_{}_image'.format(task_index)], 0, 1))
+        test_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/test_task_{}_text.mat".format(task_index), 'r')['test_task_{}_text'.format(task_index)], 0, 1))
+        test_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/test_task_{}_label.mat".format(task_index), 'r')['test_task_{}_label'.format(task_index)], 0, 1))
 
-        database_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "database_task_{}_image.mat".format(task_index), 'r')['database_task_{}_image'.format(task_index)], 0, 1))
-        database_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "database_task_{}_text.mat".format(task_index), 'r')['database_task_{}_text'.format(task_index)], 0, 1))
-        database_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "database_task_{}_label.mat".format(task_index), 'r')['database_task_{}_label'.format(task_index)], 0, 1))
+        database_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_task_{}_image.mat".format(task_index), 'r')['database_task_{}_image'.format(task_index)], 0, 1))
+        database_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_task_{}_text.mat".format(task_index), 'r')['database_task_{}_text'.format(task_index)], 0, 1))
+        database_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_task_{}_label.mat".format(task_index), 'r')['database_task_{}_label'.format(task_index)], 0, 1))
     return train_image, train_text, train_label, test_image, test_text, test_label, database_image, database_text, database_label
 
 def get_loader(args, task_index):
-    train_image, train_text, train_label, test_image, test_text, test_label, database_image, database_text, database_label = get_data(args.data_dir, task_index, args.dataset)
+    train_image, train_text, train_label, test_image, test_text, test_label, database_image, database_text, database_label = get_data(args.dataset_path, task_index, args.dataset)
 
     imgs = {'train': train_image, 'test': test_image, 'database': database_image}
     texts = {'train': train_text, 'test': test_text, 'database': database_text}

@@ -31,6 +31,8 @@ def logger(args):
     txt_log.setFormatter(formatter)
     logger.addHandler(txt_log)
 
+    print(f'log will be stored to {txt_log}')
+
     return logger
 
 
@@ -39,6 +41,7 @@ def checkpoints(args):
     os.makedirs(checkpoints_floder_path, exist_ok=True)
     args.checkpoints_dir = os.path.join(checkpoints_floder_path, args.dataset + '_' + str(args.bit))
     os.makedirs(args.checkpoints_dir, exist_ok=True)
+    print(f'checkpoints will be stored under {args.checkpoints_dir}')
 
 
 def creat_result_dict(args):
@@ -73,6 +76,7 @@ def save_result_dict(args, result_dict):
             # Write the data for each matrix to a file
             f.write(key + '\n')
             np.savetxt(f, matrix, delimiter=',', fmt='%f')
+    print(f'The result is already stored under {csv_file}')
 
 
 def train_select_prompt(args, sample, expert_prompt_pool, task_index):

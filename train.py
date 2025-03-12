@@ -63,9 +63,9 @@ def train_model(args, log, input_data_par, dataloader, task_index, result_dict):
             # 相似性保持损失
             sim_main = loss_l2(hash_similarity, similarity_matrix) * args.delta_param
             # 量化损失
-            quantified_loss = (loss_l2(image_hash, torch.sign(image_hash)) + loss_l2(text_hash, torch.sign(text_hash))) * args.gamma_param
+            quantified_loss = loss_l2(image_hash, torch.sign(image_hash)) + loss_l2(text_hash, torch.sign(text_hash))
             ##########
-            loss = sim_main + cross_loss + cross_sign_loss + quantified_loss
+            loss = sim_main + cross_loss + cross_sign_loss + quantified_loss * args.gamma_param
 
             # 优化
             loss.backward()
@@ -81,7 +81,6 @@ def train_model(args, log, input_data_par, dataloader, task_index, result_dict):
                                                    input_data_par['test_text'], input_data_par['database_text'],
                                                    input_data_par['test_label'], input_data_par['database_label'],
                                                    task_index, separation, top_k=1000)
-                log.info('...epoch: %3d, valid MAP: MAP_1000(i->t): %3.4f, MAP_1000(t->i): %3.4f' % (epoch + 1, mapi2t_1000, mapt2i_1000))
                 if mapi2t_1000+mapt2i_1000 > max_mapi2t+max_mapt2i:
                     max_mapi2t = mapi2t_1000
                     max_mapt2i = mapt2i_1000
@@ -92,12 +91,13 @@ def train_model(args, log, input_data_par, dataloader, task_index, result_dict):
         for param in optimizer.param_groups:
             param['lr'] = lr
 
+    print(f'Start evaluation!')
     hash_model.load(args)
     hash_model.cuda()
     hash_model.eval()
 
     for i in range(task_index+1):
-        _, _, _, test_image, test_text, test_label, database_image, database_text, database_label = get_data(args.data_dir, i, args.dataset)
+        _, _, _, test_image, test_text, test_label, database_image, database_text, database_label = get_data(args.dataset_path, i, args.dataset)
         test_image = test_image.cuda()
         test_text = test_text.cuda()
         test_label = test_label.cuda()
@@ -114,10 +114,10 @@ def train_model(args, log, input_data_par, dataloader, task_index, result_dict):
         log.info('...The {} data test is finished...'.format(i+1))
         log.info('...test MAP: MAP_1000(i->t): %3.4f, MAP_1000(t->i): %3.4f' % (mapi2t_1000, mapt2i_1000))
         if task_index == 0:
-            result_dict['valid_1000_i2t'][task_index, args.num_tasks+1] = mapi2t_1000.cpu().numpy()
-            result_dict['valid_1000_t2i'][task_index, args.num_tasks+1] = mapt2i_1000.cpu().numpy()
-        result_dict['valid_1000_i2t'][task_index, i] = mapi2t_1000.cpu().numpy()
-        result_dict['valid_1000_t2i'][task_index, i] = mapt2i_1000.cpu().numpy()
+            result_dict['I2T'][task_index, args.num_tasks] = mapi2t_1000.cpu().numpy()
+            result_dict['T2I'][task_index, args.num_tasks] = mapt2i_1000.cpu().numpy()
+        result_dict['I2T'][task_index, i] = mapi2t_1000.cpu().numpy()
+        result_dict['T2I'][task_index, i] = mapt2i_1000.cpu().numpy()
 
 
 def valid_fun(hash_model, args, query_x, retrieval_x, query_y, retrieval_y, query_L, retrieval_L, task_index, separation, top_k):

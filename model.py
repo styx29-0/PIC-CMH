@@ -1,3 +1,4 @@
+import os
 import time
 import torch
 from torch import nn
@@ -14,7 +15,7 @@ class BasicModule(torch.nn.Module):
         self.module_name = str(type(self))
 
     def load(self, args):
-        checkpoints = torch.load(args.checkpoints_dir + 'hash_model.pth', map_location=lambda storage, loc: storage)
+        checkpoints = torch.load(os.path.join(args.checkpoints_dir, 'hash_model.pth'), map_location=lambda storage, loc: storage)
         self.load_state_dict(checkpoints['model_state_dict'])
         if self.training:
             pass
@@ -32,7 +33,7 @@ class BasicModule(torch.nn.Module):
         torch.save({'model_state_dict': self.state_dict(),
                     'expert_prompt_image_pool': self.expert_prompt_image_pool,
                     'expert_prompt_text_pool': self.expert_prompt_text_pool
-                    }, args.checkpoints_dir + name)
+                    }, os.path.join(args.checkpoints_dir, name))
         return name
 
     def forward(self, *input):
