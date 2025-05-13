@@ -66,6 +66,7 @@ def train_model(args, log, input_data_par, dataloader, task_index, result_dict):
             quantified_loss = loss_l2(image_hash, torch.sign(image_hash)) + loss_l2(text_hash, torch.sign(text_hash))
             ##########
             loss = sim_main + cross_loss + cross_sign_loss + quantified_loss * args.gamma_param
+            log.info('epoch: %d, loss: %.4f' % (epoch, loss.item()))
 
             # 优化
             loss.backward()
@@ -81,6 +82,7 @@ def train_model(args, log, input_data_par, dataloader, task_index, result_dict):
                                                    input_data_par['test_text'], input_data_par['database_text'],
                                                    input_data_par['test_label'], input_data_par['database_label'],
                                                    task_index, separation, top_k=1000)
+                    log.info('...test MAP: MAP_1000(i->t): %3.4f, MAP_1000(t->i): %3.4f' % (mapi2t_1000, mapt2i_1000))
                 if mapi2t_1000+mapt2i_1000 > max_mapi2t+max_mapt2i:
                     max_mapi2t = mapi2t_1000
                     max_mapt2i = mapt2i_1000
@@ -118,6 +120,41 @@ def train_model(args, log, input_data_par, dataloader, task_index, result_dict):
             result_dict['T2I'][task_index, args.num_tasks] = mapt2i_1000.cpu().numpy()
         result_dict['I2T'][task_index, i] = mapi2t_1000.cpu().numpy()
         result_dict['T2I'][task_index, i] = mapt2i_1000.cpu().numpy()
+
+    # test_combined_image = []
+    # test_combined_text = []
+    # test_combined_label = []
+
+    # database_combined_image = []
+    # database_combined_text = []
+    # database_combined_label = []
+
+    # separation = False
+    
+    # for i in range(task_index+1):
+    #     _, _, _, test_image, test_text, test_label, database_image, database_text, database_label = get_data(args.dataset_path, i, args.dataset)
+    #     test_combined_image.append(test_image)
+    #     test_combined_text.append(test_text)
+    #     test_combined_label.append(test_label)
+    #     database_combined_image.append(database_image)
+    #     database_combined_text.append(database_text)
+    #     database_combined_label.append(database_label)
+
+    # test_image = torch.from_numpy(np.concatenate(test_combined_image)).cuda()
+    # test_text = torch.from_numpy(np.concatenate(test_combined_text)).cuda()
+    # test_label = torch.from_numpy(np.concatenate(test_combined_label)).cuda()
+
+    # database_image = torch.from_numpy(np.concatenate(database_combined_image)).cuda()
+    # database_text = torch.from_numpy(np.concatenate(database_combined_text)).cuda()
+    # database_label = torch.from_numpy(np.concatenate(database_combined_label)).cuda()
+    # with torch.no_grad():
+    #     mapi2t_1000, mapt2i_1000 = valid_fun(hash_model, args,
+    #                                             test_image, database_image,
+    #                                             test_text, database_text,
+    #                                             test_label, database_label,
+    #                                             task_index, separation, top_k=1000)
+    
+    # log.info(f"task{task_index+1}----all_data_I2T_mAP:{mapi2t_1000}, all_data_T2I_mAP:{mapt2i_1000}")
 
 
 def valid_fun(hash_model, args, query_x, retrieval_x, query_y, retrieval_y, query_L, retrieval_L, task_index, separation, top_k):

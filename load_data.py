@@ -32,7 +32,7 @@ class CustomDataSet(Dataset):
     
     
 def get_data(data_path, task_index, dataset):
-    if dataset == 'MSCOCO':
+    if dataset == 'MSCOCO' or dataset == 'MSCOCO_NoMean':
         train_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_{}_image.mat".format(task_index), 'r')['train_{}_image'.format(task_index)], 0, 1))
         train_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_{}_text.mat".format(task_index), 'r')['train_{}_text'.format(task_index)], 0, 1))
         train_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_{}_label.mat".format(task_index), 'r')['train_{}_lab'.format(task_index)], 0, 1))
@@ -44,7 +44,7 @@ def get_data(data_path, task_index, dataset):
         database_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_{}_image.mat".format(task_index), 'r')['database_{}_image'.format(task_index)], 0, 1))
         database_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_{}_text.mat".format(task_index), 'r')['database_{}_text'.format(task_index)], 0, 1))
         database_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/database_{}_label.mat".format(task_index), 'r')['database_{}_lab'.format(task_index)], 0, 1))
-    elif dataset == 'NUSWIDE':
+    elif dataset == 'NUSWIDE' or dataset == 'NUSWIDE_NoMean':
         train_image = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_task_{}_image.mat".format(task_index), 'r')['train_task_{}_image'.format(task_index)], 0, 1))
         train_text = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_task_{}_text.mat".format(task_index), 'r')['train_task_{}_text'.format(task_index)], 0, 1))
         train_label = torch.from_numpy(np.swapaxes(h5py.File(data_path + "/train_task_{}_label.mat".format(task_index), 'r')['train_task_{}_label'.format(task_index)], 0, 1))

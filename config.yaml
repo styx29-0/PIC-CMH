@@ -1,8 +1,9 @@
-data_path: '/data/LiuWenHao/data'
+data_path: '/data/liuwenhao/data/mat/'
 
-dataset: 'NUSWIDE' # MSCOCO/NUSWIDE
+dataset: 'MSCOCO_NoMean' # MSCOCO_NoMean/NUSWIDE_NoMean
+# dataset: 'NUSWIDE' # MSCOCO/NUSWIDE
 
-bit: 128 # 16/32/64/128
+bit: 16 # 16/32/64/128/256
 epoch: 100
 valid: True
 valid_epoch: 1
